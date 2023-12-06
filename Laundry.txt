@@ -1,0 +1,10 @@
+Laundry
+Mengirimkan informasi ke client kapan penjemputan baju kotor
+Kapan perkiraan pengantaran baju hasil laundry
+Custumer
+Melihat laundry mana yang memberikan waktu selesai laundry paling cepat
+Memilih akan memesan ke laundry yang mana.
+
+Why Using JSON?
+MQTT message payloads are just byte arrays, there is no inherent format to them. Strings tend to works as long as both ends of the transaction are using the same character encoding.
+The current usual solution to this problem is to encode structures are JSON, but XML or something like protobuffers are also good candidates.
