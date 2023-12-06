@@ -52,33 +52,43 @@ Berikut adalah list table yang digunakan
 | harga | int | - |
 | tgl_selesai | varchar(10) | Menggunakan varchar agar memudahkan pengolahan data |
 | status | tinyint(1) | Status laundry dapat diubah manual pada menu 3 |
+
+
+
+
 ## FAQ
 
-<details><summary>#### Kenapa menggunakan MySQL</summary>
-
- Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
-
-<details> <summary>#### Apa itu CRUD?</summary>
-
-CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data</details>
-
-<details> <summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
-
-Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.</details>
-
-<details> <summary>#### Apa fungsi mydb.commit()?</summary>
-
-Fungsi commit() untuk memastikan adanya perubahan pada database</details>
-
-<details> <summary>#### Apa fungsi sql.execute(query,value)?</summary>
-
-Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database</details>
-
-<details> 
-<summary>#### Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
-Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.</details>
+<details>
+ <summary>#### Kenapa menggunakan MySQL</summary>
+ Penggunaan database diperlukan untuk menyimpan data dan manipulasi data
+</details>
 
 <details>
-<summary>#### Buat apa __name__ == '__main__' ?</summary>
-Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
+ <summary>#### Apa itu CRUD?</summary>
+ CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data
+</details>
+
+<details> 
+ <summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
+ Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.
+</details>
+
+<details>
+ <summary>#### Apa fungsi mydb.commit()?</summary>
+ Fungsi commit() untuk memastikan adanya perubahan pada database
+</details>
+
+<details> 
+ <summary>Apa fungsi sql.execute(query,value)?</summary>
+ Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database
+</details>
+
+<details> 
+ <summary>Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
+ Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.
+</details>
+
+<details>
+ <summary>Buat apa __name__ == '__main__' ?</summary>
+ Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
 </details>
