@@ -59,22 +59,22 @@ Berikut adalah list table yang digunakan
 ## FAQ
 
 <details>
- <summary>#### Kenapa menggunakan MySQL</summary>
+ <summary>Kenapa menggunakan MySQL</summary>
  Penggunaan database diperlukan untuk menyimpan data dan manipulasi data
 </details>
 
 <details>
- <summary>#### Apa itu CRUD?</summary>
+ <summary>Apa itu CRUD?</summary>
  CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data
 </details>
 
 <details> 
- <summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
+ <summary>Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
  Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.
 </details>
 
 <details>
- <summary>#### Apa fungsi mydb.commit()?</summary>
+ <summary>Apa fungsi mydb.commit()?</summary>
  Fungsi commit() untuk memastikan adanya perubahan pada database
 </details>
 
