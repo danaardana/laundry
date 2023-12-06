@@ -54,30 +54,31 @@ Berikut adalah list table yang digunakan
 | status | tinyint(1) | Status laundry dapat diubah manual pada menu 3 |
 ## FAQ
 
-<summary>#### Kenapa menggunakan MySQL</summary>
+<details><summary>#### Kenapa menggunakan MySQL</summary>
 
-<details> Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
+ Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
 
-<summary>#### Apa itu CRUD?</summary>
+<details> <summary>#### Apa itu CRUD?</summary>
 
-<details> CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data</details>
+CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data</details>
 
-<summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
+<details> <summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
 
-<details> Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.</details>
+Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.</details>
 
-<summary>#### Apa fungsi mydb.commit()?</summary>
+<details> <summary>#### Apa fungsi mydb.commit()?</summary>
 
-<details> Fungsi commit() untuk memastikan adanya perubahan pada database</details>
+Fungsi commit() untuk memastikan adanya perubahan pada database</details>
 
-<summary>#### Apa fungsi sql.execute(query,value)?</summary>
+<details> <summary>#### Apa fungsi sql.execute(query,value)?</summary>
 
-<details> Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database</details>
+Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database</details>
 
+<details> 
 <summary>#### Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
+Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.</details>
 
-<details> Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.</details>
-
+<details>
 <summary>#### Buat apa __name__ == '__main__' ?</summary>
-
-<details> Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.</details>
+Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
+</details>
