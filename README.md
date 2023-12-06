@@ -54,30 +54,30 @@ Berikut adalah list table yang digunakan
 | status | tinyint(1) | Status laundry dapat diubah manual pada menu 3 |
 ## FAQ
 
-#### Kenapa menggunakan MySQL
+<summary>#### Kenapa menggunakan MySQL</summary>
 
 <details> Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
 
-#### Apa itu CRUD?
+<summary>#### Apa itu CRUD?</summary>
 
 <details> CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data</details>
 
-#### Kenapa koneksi MySQL tidak dibuat fungsi?
+<summary>#### Kenapa koneksi MySQL tidak dibuat fungsi?</summary>
 
 <details> Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.</details>
 
-#### Apa fungsi mydb.commit()?
+<summary>#### Apa fungsi mydb.commit()?</summary>
 
 <details> Fungsi commit() untuk memastikan adanya perubahan pada database</details>
 
-#### Apa fungsi sql.execute(query,value)?
+<summary>#### Apa fungsi sql.execute(query,value)?</summary>
 
 <details> Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database</details>
 
-#### Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?
+<summary>#### Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
 
 <details> Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.</details>
 
-#### Buat apa __name__ == '__main__' ?
+<summary>#### Buat apa __name__ == '__main__' ?</summary>
 
 <details> Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.</details>
