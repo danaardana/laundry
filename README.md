@@ -56,28 +56,28 @@ Berikut adalah list table yang digunakan
 
 #### Kenapa menggunakan MySQL
 
-Penggunaan database diperlukan untuk menyimpan data dan manipulasi data
+<details> Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
 
 #### Apa itu CRUD?
 
-CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data
+<details> CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data</details>
 
 #### Kenapa koneksi MySQL tidak dibuat fungsi?
 
-Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.
+<details> Bedasarkan percobaan yang telah dilakukan, ketika akan melakukan koneksi menggunakan fungsi. Koneksi tersebut sudah tutup, koneksi tersebut dapat ditemui pada variable mydb.</details>
 
 #### Apa fungsi mydb.commit()?
 
-Fungsi commit() untuk memastikan adanya perubahan pada database
+<details> Fungsi commit() untuk memastikan adanya perubahan pada database</details>
 
 #### Apa fungsi sql.execute(query,value)?
 
-Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database
+<details> Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database</details>
 
 #### Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?
 
-Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.
+<details> Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.</details>
 
 #### Buat apa __name__ == '__main__' ?
 
-Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
+<details> Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.</details>
