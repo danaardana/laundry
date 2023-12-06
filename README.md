@@ -56,7 +56,7 @@ Berikut adalah list table yang digunakan
 
 #### Kenapa menggunakan MySQL
 
-<Jawab> Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</Jawab>
+<details> Penggunaan database diperlukan untuk menyimpan data dan manipulasi data</details>
 
 #### Apa itu CRUD?
 
