@@ -94,3 +94,8 @@ Berikut adalah list table yang digunakan
  <summary>Apa fungsi sql.execute(query,value)?</summary>
  Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database
 </details>
+
+<details> 
+ <summary>Mengapa menggunakan JSON?</summary>
+ MQTT message payloads merupakan byte arrays, dan tidak memiliki format. Sedangkan string dapat bekerja bila memiliki tipe encoding yang sesuai. 
+</details>

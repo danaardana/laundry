@@ -6,6 +6,7 @@ import string
 import random
 import json
 from inputimeout import inputimeout 
+from script_pub import *
 
 broker_address='localhost'
 client = mqtt.Client('P1')
@@ -78,18 +79,9 @@ def randomStr():
 
 def on_message(client, userdata, message):
     print('')
-    print('notifikasi : ', str(message.payload.decode('utf-8')))
-
-
-def preview(data, branch):    
-    print('|=====================================|')
-    print('|      = Struk Laundry ' + branch + ' =       |')
-    print('|=====================================|')
-    print('  Nama                : ',data[0][2])
-    print('  Berat Laundry       : ',data[0][3], 'kg')
-    print('  Total pembayaran    :  Rp.',data[0][4])
-    print('  Tanggal selesai     : ',data[0][5])
-    print('|=====================================|')
+    print('ANNOUNCEMENT : ', str(message.payload.decode('utf-8')))
+    print('')
+    time.sleep(0.5)
 
 
 def run():
@@ -129,23 +121,27 @@ def run():
                 print('Option not available')
         
         while True and laundry != '':
-            menu_del = ''
+            menu_sub = ''
             menu(client_id)
             menu_option = input("Pilihan anda: ")
+
             if menu_option != '':
+
                 if (menu_option.isnumeric()):
                     menu_option = int(menu_option)
+
                     match menu_option:
                         case 1:
+
                             if client_id_prev != '':
                                 print('')
                                 print('Untuk memesan ulang Kode ID akan diperbaharui')
                                 print('')
 
                                 while True:
-                                    menu_del = input('Perbaharui (Y/N) ') 
+                                    menu_sub = input('Perbaharui (Y/N) ') 
                                     
-                                    if (menu_del == 'y') or (menu_del =='Y'):  
+                                    if (menu_sub == 'y') or (menu_sub =='Y'):  
                                         client_id_prev = ''                          
                                         client.unsubscribe(client_id)
                                         client_id = randomStr()
@@ -153,17 +149,21 @@ def run():
                                         os.system('cls')
                                         menu(client_id)
                                         break
-                                    elif (menu_del == 'n') or (menu_del =='N'):
+
+                                    elif (menu_sub == 'n') or (menu_sub =='N'):
                                         print('Kode ID tidak diperbaharui')
                                         break
+
                                     else:
                                         print('Option not available')
                             
-                            elif menu_del == '' or (menu_del == 'y') or (menu_del =='Y'):
+                            elif menu_sub == '' or (menu_sub == 'y') or (menu_sub =='Y'):
+
                                 while True:
                                     client_nama = input('Nama : ')
                                     if len(client_nama) < 20:
                                         break
+
                                     else:
                                         print('Tolong dipersingkat nama anda, terima kasih')
                                 
@@ -172,6 +172,7 @@ def run():
                                     if client_berat.isnumeric():
                                         client_berat = int(client_berat)
                                         break
+
                                     else:
                                         print('Hanya menerima angka')
 
@@ -183,12 +184,51 @@ def run():
                                 client_id_prev = client_id
 
                         case 2:
-                            nama = str(input('Masukan nama anda : '))
-                            #preview(data, branch)
+
+                            while True:
+                                menu_sub2 = input('Menggunakan Kode ID yang lain (Y/N) ') 
+                                
+                                if (menu_sub2 == 'y') or (menu_sub2 =='Y'):  
+                                    client_id = input('Masukan Kode ID: ')
+                                    break
+
+                                elif (menu_sub2 == 'n') or (menu_sub2 =='N'):
+                                    print('Kode ID tidak diperbaharui')
+                                    break
+
+                                else:
+                                    print('Option not available')
+                            
+                            data = show_one(client_id)
+                            
+                            if data != False:
+                                print('|=====================================|')
+                                print('|      = Struk Laundry ' + branch + ' =       |')
+                                print('|=====================================|')
+                                print('  Nama                : ',data[0][2])
+                                print('  Berat Laundry       : ',data[0][3], 'kg')
+                                print('  Total pembayaran    :  Rp.',data[0][4])
+                                print('  Tanggal selesai     : ',data[0][5])
+                                print('|=====================================|')
                                 
                         case 3:
+
+                            while True:
+                                menu_sub2 = input('Menggunakan Kode ID yang lain (Y/N) ') 
+                                
+                                if (menu_sub2 == 'y') or (menu_sub2 =='Y'):  
+                                    client_id = input('Masukan Kode ID: ')
+                                    break
+
+                                elif (menu_sub2 == 'n') or (menu_sub2 =='N'):
+                                    print('Kode ID tidak diperbaharui')
+                                    break
+
+                                else:
+                                    print('Option not available')
+
                             print('Pesanan akan dibatalkan ')
-                            data = ['delete',client_id]
+                            data = ['delete', client_id, branch]
                             client.publish(topicNew, json.dumps(data))
 
                         case 0:
@@ -196,6 +236,8 @@ def run():
                 else:
                     print('Option not available')
 
+            print('')
+            input('Press to continue..')
             os.system('cls')
 
         os.system('cls')

@@ -17,20 +17,36 @@ def on_message(client, userdata, msg):
         print('')
         print('Notifikasi : Pesanan baru diterima')  
         print('')
-        if len(dataMsg) > 2:
-            result = insert(dataMsg)
+        result = insert(dataMsg)
         if result > 0:
             print('Sukses menambahkan ke databse')
+            bc_msg = 'Sukses menambahkan ke databse'
         else:
             print('Gagal menambahkan ke database')
-            
+            bc_msg = 'Gagal menambahkan ke database'
+
     elif dataMsg[0] == 'delete':
         id = str(dataMsg[1]).upper()
-        delete(id)
+        result = delete(id)
         print('')
-        print('Notifikasi : Penghapusan pelanggan dengan kode ', id)  
-        print('')
+        if result > 0 :
+            print('Notifikasi : Penghapusan pelanggan dengan kode ', id, ' berhasil')  
+            print('')
+            bc_msg = ' Penghapusan pelanggan dengan kode ' + id + ' berhasil'
+        else:
+            print('Notifikasi : Tidak ditemukan pelanggan dengan kode ', id)  
+            print('')
+            bc_msg = ' Tidak ditemukan pelanggan dengan kode ' + id
 
+    publish_msg(client, dataMsg[2], bc_msg)
+    
+  
+
+def publish_msg(client, branch, msg):    
+    if branch == 'bojong':
+        client.publish('bojong', msg)
+    else:
+        client.publish('soang', msg)  
 
 
 def menu():        
@@ -141,11 +157,14 @@ def run():
                                     if (menu_del == 'y') or (menu_del =='Y'):
                                         delete(id.upper())
                                         break
+
                                     elif (menu_del == 'n') or (menu_del =='N'):
                                         print('Cenceled')
                                         break
+
                                     else:
                                         print('Option not available')
+
                             else:
                                 print('ID tidak ditemukan')
 
@@ -159,6 +178,7 @@ def run():
                 print('')
                 input('Press any key to continue...')
                 os.system('cls')
+
         os.system('cls')
 
 
