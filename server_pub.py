@@ -2,43 +2,13 @@
 import paho.mqtt.client as mqtt
 import time
 import os
+import json
 import mysql.connector
 from mysql.connector import errorcode
 
 port = 1883
 broker_address = 'localhost' 
 client = mqtt.Client('P2')
-
-#Membuat fungsi kirim pesan
-def on_message(client, userdata, message): 
-    print('')
-    print('Notifikasi : ', str(message.payload.decode('utf-8'))) 
-    print('Fitur yang dipilih: ') 
-
-def menu():        
-    print('=======================================')
-    print('|                                     |')
-    print('|            Menu Laundry             |')
-    print('|_____________________________________|')
-    print('|                                     |')
-    print('| [1] List pesanan                    |')
-    print('| [2] Pengumuman                      |')
-    print('| [3] Info Pemesanan                  |')
-    print('| [4] Hapus pesanan                   |')
-    print('|                                     |')
-    print('| [0] Kembali                         |')
-    print('=======================================')
-
-
-def branch_menu():
-    print('|=====================================|')
-    print('|             Pilih Cabang            |')
-    print('|=====================================|')
-    print('| [1] Laundry Bojong                  |')
-    print('| [2] Laundry Soang                   |')
-    print('|                                     |')
-    print('| [0] Keluar                          |')
-    print('|=====================================|')
 
 
 def update(id):
@@ -47,7 +17,7 @@ def update(id):
         database="laundry"
     )
     sql = mydb.cursor()
-    query = "UPDATE custumers SET status = %s WHERE id = %s"
+    query = "UPDATE `custumers` SET status = %s WHERE id = %s"
     value = ('1',id)
     sql.execute(query,value)
     result = sql.rowcount
@@ -62,7 +32,7 @@ def delete(id):
         database="laundry"
     )
     sql = mydb.cursor()
-    query = "DELETE FROM customers WHERE id = %s "
+    query = "DELETE FROM `custumers` WHERE id = %s "
     value = (id,)
     sql.execute(query,value)
     result = sql.rowcount
@@ -109,6 +79,57 @@ def show_list(laundry):
                 print(item)
     
 
+def insert(data):    
+    mydb = mysql.connector.connect(
+        user="root",
+        database="laundry"
+    )
+    sql = mydb.cursor()
+    query = "INSERT INTO custumers (`id`, `cabang`, `nama`, `berat`, `harga`, `tgl_selesai`) VALUES (%s, %s, %s, %s, %s, %s)"
+    value = (data[0],data[1],data[2],(data[3]),data[4],data[5])
+    sql.execute(query,value)
+    result = sql.rowcount
+    mydb.commit()
+    mydb.close()
+    return result
+
+def on_message(client, userdata, msg): 
+    dataMsg = msg.payload.decode()
+    dataMsg = json.loads(dataMsg)
+    if len(dataMsg) > 2:
+        result = insert(dataMsg)
+    if result > 0:
+        print('')
+        print('Notifikasi : Pesanan baru diterima')  
+        print('')
+
+def menu():        
+    print('=======================================')
+    print('|                                     |')
+    print('|            Menu Laundry             |')
+    print('|_____________________________________|')
+    print('|                                     |')
+    print('| [1] List pesanan                    |')
+    print('| [2] Pengumuman                      |')
+    print('| [3] Info Pemesanan                  |')
+    print('| [4] Hapus pesanan                   |')
+    print('|                                     |')
+    print('| [0] Kembali                         |')
+    print('=======================================')
+
+
+def branch_menu():
+    print('|=====================================|')
+    print('|             Pilih Cabang            |')
+    print('|=====================================|')
+    print('| [1] Laundry Bojong                  |')
+    print('| [2] Laundry Soang                   |')
+    print('|                                     |')
+    print('| [0] Keluar                          |')
+    print('|=====================================|')
+
+
+
 def run():
     client.on_message=on_message 
     client.connect(broker_address, port) 
@@ -136,7 +157,6 @@ def run():
                 print('Option not available')
 
             time.sleep(0.5)
-        os.system('cls')
 
        
         while True and laundry != '':
@@ -147,11 +167,19 @@ def run():
                     menu_option = int(menu_option)
                     match menu_option:
                         case 1:
-                            show_list(laundry)
+                            data = show_all()
+                            print('                  === Daftar pesanan ===          ') 
+                            for item in data:
+                                if laundry == 1:
+                                    if item[1] == 'bojong':
+                                        print(item)
+                                else:
+                                    if item[1] == 'soang':
+                                        print(item)
 
 
                         case 2:
-                            bc_msg = str(input('Masukan pesan : '))
+                            bc_msg = input('Masukan pesan : ')
                             if laundry == 1:
                                 client.publish('bojong', bc_msg)
                             else:
@@ -160,15 +188,15 @@ def run():
 
                         case 3:
                             show_list(laundry)
-                            addr = str(input('Masukan ID : '))
-                            update(addr)
-                            client.publish(addr, 'Pesanan anda sudah selesai')
+                            id = input('Masukan ID : ')
+                            update(id.upper())
+                            client.publish(id.upper(), 'Pesanan anda sudah selesai')
                             print('Sudah diperbaharui')
 
 
                         case 4:                    
                             id = input('Masukan ID: ')
-                            data = show_one(id)
+                            data = show_one(id.upper())
                             print('|=====================================|')
                             print('|     =  Konfirmasi Penghapusan =     |')
                             print('|=====================================|')
@@ -179,7 +207,7 @@ def run():
                             print('|=====================================|')
                             menu_del = input("Are you sure want to delete? (y/N) ")
                             if (menu_del == 'y') or (menu_del =='Y'):
-                                delete(id)
+                                delete(id.upper())
                             elif (menu_del == 'y') or (menu_del =='Y'):
                                 print('Cenceled')
                             else:
@@ -190,9 +218,11 @@ def run():
 
                 else:
                     print('Option not available')
-                    
+                
+                print('')
+                print('')
                 input('Press any key to continue...')
                 os.system('cls')
-
+        os.system('cls')
 if __name__ == '__main__':
     run()
