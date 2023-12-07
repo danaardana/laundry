@@ -1,107 +1,37 @@
-#Import Library
 import paho.mqtt.client as mqtt
 import time
 import os
 import json
-import mysql.connector
-from mysql.connector import errorcode
+from script_pub import *
 
-port = 1883
+
 broker_address = 'localhost' 
 client = mqtt.Client('P2')
+port = 1883
 
-
-def update(id):
-    mydb = mysql.connector.connect(
-        user="root",
-        database="laundry"
-    )
-    sql = mydb.cursor()
-    query = "UPDATE `custumers` SET status = %s WHERE id = %s"
-    value = ('1',id)
-    sql.execute(query,value)
-    result = sql.rowcount
-    mydb.commit()
-    mydb.close()
-    return result
-
-
-def delete(id):
-    mydb = mysql.connector.connect(
-        user="root",
-        database="laundry"
-    )
-    sql = mydb.cursor()
-    query = "DELETE FROM `custumers` WHERE id = %s "
-    value = (id,)
-    sql.execute(query,value)
-    result = sql.rowcount
-    mydb.commit()
-    mydb.close()
-    return result
-
-
-def show_one(id):
-    mydb = mysql.connector.connect(
-        user="root",
-        database="laundry"
-    )
-    sql = mydb.cursor()
-    query = "SELECT * FROM custumers WHERE id = %s"
-    value = (id, )
-    sql.execute(query,value)
-    data = sql.fetchall()
-    mydb.close()
-    return data
-
-
-def show_all():
-    mydb = mysql.connector.connect(
-        user="root",
-        database="laundry"
-    )
-    sql = mydb.cursor()
-    sql.execute("SELECT * FROM custumers")
-    data = sql.fetchall()
-    mydb.close()
-    return data
-
-
-def show_list(laundry):
-    data = show_all()
-    print('                  === Daftar pesanan ===          ') 
-    for item in data:
-        if laundry == 1:
-            if item[1] == 'bojong':
-                print(item)
-        else:
-            if item[1] == 'soang':
-                print(item)
-    
-
-def insert(data):    
-    mydb = mysql.connector.connect(
-        user="root",
-        database="laundry"
-    )
-    sql = mydb.cursor()
-    query = "INSERT INTO custumers (`id`, `cabang`, `nama`, `berat`, `harga`, `tgl_selesai`) VALUES (%s, %s, %s, %s, %s, %s)"
-    value = (data[0],data[1],data[2],(data[3]),data[4],data[5])
-    sql.execute(query,value)
-    result = sql.rowcount
-    mydb.commit()
-    mydb.close()
-    return result
 
 def on_message(client, userdata, msg): 
     dataMsg = msg.payload.decode()
     dataMsg = json.loads(dataMsg)
-    if len(dataMsg) > 2:
-        result = insert(dataMsg)
-    if result > 0:
+    if dataMsg[0] == 'insert':
         print('')
         print('Notifikasi : Pesanan baru diterima')  
         print('')
+        if len(dataMsg) > 2:
+            result = insert(dataMsg)
+        if result > 0:
+            print('Sukses menambahkan ke databse')
+        else:
+            print('Gagal menambahkan ke database')
+            
+    elif dataMsg[0] == 'delete':
+        id = str(dataMsg[1]).upper()
+        delete(id)
+        print('')
+        print('Notifikasi : Penghapusan pelanggan dengan kode ', id)  
+        print('')
+
+
 
 def menu():        
     print('=======================================')
@@ -197,21 +127,27 @@ def run():
                         case 4:                    
                             id = input('Masukan ID: ')
                             data = show_one(id.upper())
-                            print('|=====================================|')
-                            print('|     =  Konfirmasi Penghapusan =     |')
-                            print('|=====================================|')
-                            print('  Nama                : ',data[0][2])
-                            print('  Berat Laundry       : ',data[0][3], 'kg')
-                            print('  Total pembayaran    :  Rp.',data[0][4])
-                            print('  Tanggal selesai     : ',data[0][5])
-                            print('|=====================================|')
-                            menu_del = input("Are you sure want to delete? (y/N) ")
-                            if (menu_del == 'y') or (menu_del =='Y'):
-                                delete(id.upper())
-                            elif (menu_del == 'y') or (menu_del =='Y'):
-                                print('Cenceled')
+                            if data != False:
+                                print('|=====================================|')
+                                print('|     =  Konfirmasi Penghapusan =     |')
+                                print('|=====================================|')
+                                print('  Nama                : ',data[0][2])
+                                print('  Berat Laundry       : ',data[0][3], 'kg')
+                                print('  Total pembayaran    :  Rp.',data[0][4])
+                                print('  Tanggal selesai     : ',data[0][5])
+                                print('|=====================================|')
+                                while True:
+                                    menu_del = input("Are you sure want to delete? (y/N) ")
+                                    if (menu_del == 'y') or (menu_del =='Y'):
+                                        delete(id.upper())
+                                        break
+                                    elif (menu_del == 'n') or (menu_del =='N'):
+                                        print('Cenceled')
+                                        break
+                                    else:
+                                        print('Option not available')
                             else:
-                                print('Option not available')
+                                print('ID tidak ditemukan')
 
                         case 0:
                             break
@@ -224,5 +160,7 @@ def run():
                 input('Press any key to continue...')
                 os.system('cls')
         os.system('cls')
+
+
 if __name__ == '__main__':
     run()

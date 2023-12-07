@@ -34,6 +34,8 @@ Pastikan XAMPP dapat digunakan dengan sempurna, selanjutnya
 - Publish pembaharuan informasi bila laundry telah selesai
 - Opsi pemesanan cabang laundry
 - Menyediakan broadcast informasi
+- Perbaharui kode ID bila memesan ulang
+- Mengirim permintaan dan menghapus pesanan
 
 
 
@@ -47,7 +49,7 @@ Berikut adalah list table yang digunakan
 | --- | --- |--- |
 | id | varchar(10) | Mengandung angka dana huruf, bersifat unik |
 | cabang | varchar(10) | - |
-| name | varchar(10) | Tidak boleh mengandung angka |
+| name | varchar(20) | Tidak boleh mengandung angka |
 | berat | int | - |
 | harga | int | - |
 | tgl_selesai | varchar(10) | Menggunakan varchar agar memudahkan pengolahan data |
@@ -59,6 +61,11 @@ Berikut adalah list table yang digunakan
 ## FAQ
 
 <details>
+ <summary>Buat apa __name__ == '__main__' ?</summary>
+ Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
+</details>
+
+<details>
  <summary>Kenapa menggunakan MySQL</summary>
  Penggunaan database diperlukan untuk menyimpan data dan manipulasi data
 </details>
@@ -66,6 +73,11 @@ Berikut adalah list table yang digunakan
 <details>
  <summary>Apa itu CRUD?</summary>
  CRUD singkatan dari Creat, Remove, Update, Delete. Yakni manipulasi data
+</details>
+
+<details> 
+ <summary>Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
+ Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.
 </details>
 
 <details> 
@@ -81,14 +93,4 @@ Berikut adalah list table yang digunakan
 <details> 
  <summary>Apa fungsi sql.execute(query,value)?</summary>
  Fungsi untuk menjalankan perintah query, perlu dingat tidak akan ada perubahan pada database
-</details>
-
-<details> 
- <summary>Kenapa saat menguhubunggkan hanya menggunakan user dan nama database?</summary>
- Pada implemntasi saat ini menggunakan pengaturan username dan password default sehingga tetap dapat berjalan.
-</details>
-
-<details>
- <summary>Buat apa __name__ == '__main__' ?</summary>
- Script itu sebenernya diperuntukan apabila file tersebut dijalankan sebagai modul, sehingga memastikan bahwa fungsi sciprt dijalankan bila file tersebut dijalankan secara tunggal.
 </details>

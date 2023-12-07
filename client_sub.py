@@ -1,16 +1,16 @@
-# Library
 import paho.mqtt.client as mqtt
 import os
 import time
-import json
 from datetime import date, timedelta
 import string
 import random
+import json
+from inputimeout import inputimeout 
 
-# setup 
 broker_address='localhost'
 client = mqtt.Client('P1')
 port=1883
+
 
 def menu(client_id):    
     print('|=====================================|')
@@ -36,18 +36,17 @@ def branch_menu():
     print('|=====================================|')
 
 
-# manual func
-def calculate_date(berat):                 #menghitung tanggal pada saat pembuatan pesanan
-    if berat <= 5 :                        #apabila kondisi pesanan beratnya dibawah 10
-        dt = date.today() + timedelta(2)    #maka akan menambah 2 hari
-    elif berat <= 10 :                     #apabila kondisi pesanan beratnya dibawah 20
-        dt = date.today() + timedelta(3)    #maka akan menambah 3 hari
-    else:                                   #apabila kondisi pesanan beratnya diatas 20
-        dt = date.today() + timedelta(5) #  maka akan menambah 5 hari
+def calculate_date(berat):                 
+    if berat <= 5 :                        
+        dt = date.today() + timedelta(2)    
+    elif berat <= 10 :                     
+        dt = date.today() + timedelta(3)    
+    else:                                   
+        dt = date.today() + timedelta(5) 
     return dt.strftime("%m/%d/%Y")
 
 
-def calculate_costBojong(berat): #menghitung berat dan harga
+def calculate_costBojong(berat):
     if berat <= 5 :
         biaya = berat *7000
     elif berat <= 10 :
@@ -80,7 +79,6 @@ def randomStr():
 def on_message(client, userdata, message):
     print('')
     print('notifikasi : ', str(message.payload.decode('utf-8')))
-    print("Pilihan anda: ")
 
 
 def preview(data, branch):    
@@ -94,77 +92,113 @@ def preview(data, branch):
     print('|=====================================|')
 
 
-client.on_message=on_message
-client.connect(broker_address, port)
+def run():
+    client.on_message=on_message
+    client.connect(broker_address, port)
 
-while True:
-    branch_menu()
-    laundry = input("Pilih Laundry: ")
+    while True:
+        branch_menu()
+        laundry = input("Pilih Laundry: ")
 
-    if laundry != '':
-        if (laundry.isnumeric()):
-            laundry = int(laundry)
-            client.loop_start()
-            if laundry ==  1:
+        if laundry != '':
+            if (laundry.isnumeric()):
+                laundry = int(laundry)
+                client.loop_start()
+                if laundry ==  1:
                     client.subscribe('bojong')
                     branch = 'bojong'                    
                     topicNew = 'laundry-bojong'
                     print('Anda telah memilih Laundry Bojong')
 
-            elif laundry == 2:                    
+                elif laundry == 2:                    
                     client.subscribe('soang')
                     branch = 'soang'          
                     topicNew = 'laundry-soang'
                     print('Anda telah memilih Laundry Soang')
 
-            elif laundry == 0:
+                elif laundry == 0:
                     break
-                    
-            client_id = randomStr()
-            client.subscribe(client_id)
-            time.sleep(0.5)
-            os.system('cls')
-
-        else:
-            print('Option not available')
-    
-    while True and laundry != '':
-        menu(client_id)
-        menu_option = input("Pilihan anda: ")
-        if menu_option != '':
-            if (menu_option.isnumeric()):
-                menu_option = int(menu_option)
-                match menu_option:
-                    case 1:
-                        while True:
-                            nama = input('Nama : ')
-                            if len(nama) < 20:
-                                break
-                            else:
-                                print('Tolong dipersingkat nama anda, terima kasih')
-
-                        berat = int(input('Berat : '))
-                        Wkt_selesai = calculate_date(berat)
-                        Tot_biaya = calculate_costBojong(berat)
                         
-                        # proses ke database
-                        data = [client_id, branch,  nama, berat, Tot_biaya, Wkt_selesai]
-                        client.publish(topicNew, json.dumps(data))
-                        print('Pesanan telah tersimpan')
+                client_id = randomStr()
+                client_id_prev = ''
+                client.subscribe(client_id)
+                time.sleep(0.5)
+                os.system('cls')
 
-                    case 2:
-                        #reload(database)
-                        nama = str(input('Masukan nama anda : '))
-                        preview(data, branch)
-                            
-                    case 3:
-                        nama = input('Masukan nama anda : ')
-
-                    case 0:
-                        break
             else:
                 print('Option not available')
+        
+        while True and laundry != '':
+            menu_del = ''
+            menu(client_id)
+            menu_option = input("Pilihan anda: ")
+            if menu_option != '':
+                if (menu_option.isnumeric()):
+                    menu_option = int(menu_option)
+                    match menu_option:
+                        case 1:
+                            if client_id_prev != '':
+                                print('')
+                                print('Untuk memesan ulang Kode ID akan diperbaharui')
+                                print('')
+
+                                while True:
+                                    menu_del = input('Perbaharui (Y/N) ') 
+                                    
+                                    if (menu_del == 'y') or (menu_del =='Y'):  
+                                        client_id_prev = ''                          
+                                        client.unsubscribe(client_id)
+                                        client_id = randomStr()
+                                        client.subscribe(client_id)
+                                        os.system('cls')
+                                        menu(client_id)
+                                        break
+                                    elif (menu_del == 'n') or (menu_del =='N'):
+                                        print('Kode ID tidak diperbaharui')
+                                        break
+                                    else:
+                                        print('Option not available')
+                            
+                            elif menu_del == '' or (menu_del == 'y') or (menu_del =='Y'):
+                                while True:
+                                    client_nama = input('Nama : ')
+                                    if len(client_nama) < 20:
+                                        break
+                                    else:
+                                        print('Tolong dipersingkat nama anda, terima kasih')
+                                
+                                while True:
+                                    client_berat = input('Berat : ')
+                                    if client_berat.isnumeric():
+                                        client_berat = int(client_berat)
+                                        break
+                                    else:
+                                        print('Hanya menerima angka')
+
+                                Wkt_selesai = calculate_date(client_berat)
+                                Tot_biaya = calculate_costBojong(client_berat)
+                                data = ['insert',client_id, branch,  client_nama, client_berat, Tot_biaya, Wkt_selesai]
+                                client.publish(topicNew, json.dumps(data))
+                                print('Pesanan telah tersimpan')
+                                client_id_prev = client_id
+
+                        case 2:
+                            nama = str(input('Masukan nama anda : '))
+                            #preview(data, branch)
+                                
+                        case 3:
+                            print('Pesanan akan dibatalkan ')
+                            data = ['delete',client_id]
+                            client.publish(topicNew, json.dumps(data))
+
+                        case 0:
+                            break
+                else:
+                    print('Option not available')
+
+            os.system('cls')
 
         os.system('cls')
 
-    os.system('cls')
+if __name__ == '__main__':
+    run()
