@@ -47,19 +47,7 @@ def calculate_date(berat):
     return dt.strftime("%m/%d/%Y")
 
 
-def calculate_costBojong(berat):
-    if berat <= 5 :
-        biaya = berat *7000
-    elif berat <= 10 :
-        biaya = berat *6000
-    elif berat <= 15 :
-        biaya = berat *5000
-    else:
-        biaya = berat *4000
-    return biaya
-
-
-def calculate_costSoang(berat):
+def calculate_cost(berat):
     if berat <= 5 :
         biaya = berat *7000
     elif berat <= 10 :
@@ -177,7 +165,7 @@ def run():
                                         print('Hanya menerima angka')
 
                                 Wkt_selesai = calculate_date(client_berat)
-                                Tot_biaya = calculate_costBojong(client_berat)
+                                Tot_biaya = calculate_cost(client_berat)
                                 data = ['insert',client_id, branch,  client_nama, client_berat, Tot_biaya, Wkt_selesai]
                                 client.publish(topicNew, json.dumps(data))
                                 print('Pesanan telah tersimpan')
@@ -189,7 +177,8 @@ def run():
                                 menu_sub2 = input('Menggunakan Kode ID yang lain (Y/N) ') 
                                 
                                 if (menu_sub2 == 'y') or (menu_sub2 =='Y'):  
-                                    client_id = input('Masukan Kode ID: ')
+                                    client_id = str(input('Masukan Kode ID: '))
+                                    client_id = client_id.upper()
                                     break
 
                                 elif (menu_sub2 == 'n') or (menu_sub2 =='N'):
@@ -217,7 +206,8 @@ def run():
                                 menu_sub2 = input('Menggunakan Kode ID yang lain (Y/N) ') 
                                 
                                 if (menu_sub2 == 'y') or (menu_sub2 =='Y'):  
-                                    client_id = input('Masukan Kode ID: ')
+                                    client_id = str(input('Masukan Kode ID: '))
+                                    client_id = client_id.upper()
                                     break
 
                                 elif (menu_sub2 == 'n') or (menu_sub2 =='N'):

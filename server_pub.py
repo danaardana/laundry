@@ -57,7 +57,7 @@ def menu():
     print('|                                     |')
     print('| [1] List pesanan                    |')
     print('| [2] Pengumuman                      |')
-    print('| [3] Info Pemesanan                  |')
+    print('| [3] Perbaharui Info Pemesanan       |')
     print('| [4] Hapus pesanan                   |')
     print('|                                     |')
     print('| [0] Kembali                         |')
